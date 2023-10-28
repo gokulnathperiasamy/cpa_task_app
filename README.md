@@ -145,6 +145,8 @@ Any text editor is sufficient, but VS Code is preferred.
 <img src="screenshots/014_Parse_Update.png" width="800">
 <img src="screenshots/015_iOS_Simulator.png" width="300">
 <img src="screenshots/016_iOS_Simulator.png" width="300">
+<img src="screenshots/017_iOS_Simulator.png" width="300">
+<img src="screenshots/018_iOS_Simulator.png" width="300">
 
 #### References
 

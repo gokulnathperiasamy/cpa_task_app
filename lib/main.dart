@@ -14,17 +14,15 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, debug: true);
 
-  runApp(MaterialApp(
-    home: Home(),
-  ));
+  runApp(MaterialApp(home: Task()));
 }
 
-class Home extends StatefulWidget {
+class Task extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _TaskState createState() => _TaskState();
 }
 
-class _HomeState extends State<Home> {
+class _TaskState extends State<Task> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
@@ -54,6 +52,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final dateFormat = new DateFormat('MMM dd,\nyyyy\nhh:mm');
+    final originalDateFormat = new DateFormat('MMM dd, yyyy hh:mm');
 
     return Scaffold(
       appBar: AppBar(
@@ -138,7 +137,7 @@ class _HomeState extends State<Home> {
               ])),
           Expanded(
               child: FutureBuilder<List<ParseObject>>(
-                  future: getTodo(),
+                  future: getTask(),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
@@ -176,12 +175,23 @@ class _HomeState extends State<Home> {
                                 final varStatus = varTask.get<bool>('status')!;
                                 final varDate = dateFormat.format(
                                     varTask.get<DateTime>('updatedAt')!);
+                                final varOriginalDate =
+                                    originalDateFormat.format(
+                                        varTask.get<DateTime>('updatedAt')!);
                                 //*************************************
 
                                 return ListTile(
                                   title: Text(varTitle),
                                   subtitle: Text(varContent),
                                   isThreeLine: true,
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => TaskDetails(
+                                              varTitle,
+                                              varContent,
+                                              varOriginalDate,
+                                              varStatus))),
                                   leading: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.grey,
@@ -210,7 +220,7 @@ class _HomeState extends State<Home> {
                                           value: varStatus,
                                           activeColor: Colors.blueGrey,
                                           onChanged: (value) async {
-                                            await updateTodo(
+                                            await updateTask(
                                                 varTask.objectId!, value!);
                                             setState(() {
                                               //Refresh UI
@@ -222,7 +232,7 @@ class _HomeState extends State<Home> {
                                           color: Colors.blueGrey,
                                         ),
                                         onPressed: () async {
-                                          await deleteTodo(varTask.objectId!);
+                                          await deleteTask(varTask.objectId!);
                                           setState(() {
                                             final snackBar = SnackBar(
                                               content: Text(
@@ -255,7 +265,7 @@ class _HomeState extends State<Home> {
     await task.save();
   }
 
-  Future<List<ParseObject>> getTodo() async {
+  Future<List<ParseObject>> getTask() async {
     QueryBuilder<ParseObject> queryTask =
         QueryBuilder<ParseObject>(ParseObject('Task'));
     final ParseResponse apiResponse = await queryTask.query();
@@ -267,15 +277,85 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> updateTodo(String id, bool status) async {
+  Future<void> updateTask(String id, bool status) async {
     var task = ParseObject('Task')
       ..objectId = id
       ..set('status', status);
     await task.save();
   }
 
-  Future<void> deleteTodo(String id) async {
+  Future<void> deleteTask(String id) async {
     var task = ParseObject('Task')..objectId = id;
     await task.delete();
+  }
+}
+
+class TaskDetails extends StatefulWidget {
+  final String varTitle;
+  final String varContent;
+  final String varOriginalDate;
+  final bool varStatus;
+
+  TaskDetails(
+      this.varTitle, this.varContent, this.varOriginalDate, this.varStatus);
+
+  @override
+  _TaskDetailsState createState() =>
+      _TaskDetailsState(varTitle, varContent, varOriginalDate, varStatus);
+}
+
+class _TaskDetailsState extends State<TaskDetails> {
+  final String varTitle;
+  final String varContent;
+  final String varOriginalDate;
+  final bool varStatus;
+
+  _TaskDetailsState(
+      this.varTitle, this.varContent, this.varOriginalDate, this.varStatus);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Task Details"),
+          backgroundColor: Colors.blueGrey,
+          centerTitle: true,
+        ),
+        body: Container(
+            padding: EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 18.0),
+            child: Column(children: <Widget>[
+              Column(
+                children: [
+                  Container(
+                      padding: EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 18.0),
+                      child: Text(
+                        varTitle,
+                        style: DefaultTextStyle.of(context)
+                            .style
+                            .apply(fontSizeFactor: 1.0),
+                      )),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 18.0),
+                      width: 500,
+                      child: Text(varContent)),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 18.0),
+                      width: 500,
+                      child: Text(
+                        varOriginalDate,
+                      )),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 18.0),
+                      width: 500,
+                      child: Text(
+                        varStatus ? "Status: DONE" : "Status: Pending",
+                        style: TextStyle(
+                          color: Colors.black,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ))
+                ],
+              ),
+            ])));
   }
 }
