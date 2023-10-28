@@ -86,6 +86,13 @@ Any text editor is sufficient, but VS Code is preferred.
 
 #### Running the Application
 
+> Flutter commands to get the dependencies and necessary packages:
+   ```
+   $ flutter pub get
+   $ flutter pub outdated
+   $ flutter pub upgrade
+   ``` 
+
 > To list all the configured devices, run below command from Terminal:
    ```
    $ flutter devices
@@ -129,24 +136,59 @@ Any text editor is sufficient, but VS Code is preferred.
 
 #### Application Screenshots
 
+> Back4App Dashboard
 <img src="screenshots/001_Parse_Setup.png" width="800">
+
+> Back4App API Key
 <img src="screenshots/002_Parse_API_Key.png" width="800">
+
+> Configuring API Key in Flutter Application
 <img src="screenshots/003_API_Key_Code_Config.png" width="800">
+
+> Flutter Web Application
 <img src="screenshots/004_Flutter_Web.png" width="800">
+
+> Flutter Mobile Application - iOS
+<p float="left">
 <img src="screenshots/005_iOS_Simulator.png" width="300">
 <img src="screenshots/006_iOS_Simulator.png" width="300">
+</p>
+
+> Adding Task - iOS
+<p float="left">
 <img src="screenshots/007_iOS_Simulator.png" width="300">
 <img src="screenshots/008_iOS_Simulator.png" width="300">
+</p>
+
+> Task Updated in Web Application
 <img src="screenshots/009_Flutter_Web.png" width="800">
+
+> Adding Task - Web Application
 <img src="screenshots/010_Flutter_Web.png" width="800">
+
+> Updating Status as Done from Web Application
 <img src="screenshots/011_Flutter_Web.png" width="800">
+
+> Back4App Database Updated the Status
 <img src="screenshots/012_Parse_Insert.png" width="800">
+
+> Refreshing Mobile Application to get Status
 <img src="screenshots/013_iOS_Simulator.png" width="300">
+
+> Updating Status as Done from Mobile Application
 <img src="screenshots/014_Parse_Update.png" width="800">
+
+> Adding a Task and Deleting it from Mobile - iOS
+<p float="left">
 <img src="screenshots/015_iOS_Simulator.png" width="300">
 <img src="screenshots/016_iOS_Simulator.png" width="300">
+</p>
+
+> Opening new screen with task details
+<p float="left">
 <img src="screenshots/017_iOS_Simulator.png" width="300">
 <img src="screenshots/018_iOS_Simulator.png" width="300">
+</p>
 
 #### References
 
@@ -155,6 +197,7 @@ Any text editor is sufficient, but VS Code is preferred.
 - https://developer.android.com/tools/avdmanager
 - https://mockuphone.com
 - https://docs.github.com/en/get-started/writing-on-github
+- https://docs.flutter.dev/reference/flutter-cli
 
 #### Assignment Submission Done By:
 
